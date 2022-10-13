@@ -1,0 +1,12 @@
+kind: Group
+apiVersion: user.openshift.io/v1
+metadata:
+  name: wata_dev_cluster_admins
+users:
+  - TuckerC@emea.cshare.net
+  - OBrienR@americas.cshare.net
+  - HarknessM@oceania.cshare.net
+  - JenkinsP@emea.cshare.net
+  - Vendor_DayN@americas.cshare.net
+  - Vendor_Daviss@americas.cshare.net
+  - Vendor_SadasivamT@americas.cshare.net

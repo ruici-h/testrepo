@@ -1,0 +1,12 @@
+#
+# Backup the ACM hub every 6 hours.
+#
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: BackupSchedule
+metadata:
+  name: schedule-acm
+  namespace: openshift-adp
+spec:
+  maxBackups: 10
+  veleroSchedule: 0 */6 * * *
+  veleroTtl: 72h

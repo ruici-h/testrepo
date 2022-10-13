@@ -1,0 +1,31 @@
+#
+# GitOps equivalent of command:
+# oc adm policy add-cluster-role-to-group open-cluster-management:managedclusterset:admin:gldev 'GBL All Openshift Global DEV Admins'
+# oc adm policy add-cluster-role-to-group open-cluster-management:managedclusterset:view:gldev 'GBL All OpenShift Global Development'
+#
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: 'open-cluster-management:managedclusterset:admin:gldev'
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL All Openshift Global DEV Admins
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: 'open-cluster-management:managedclusterset:admin:gldev'
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: 'open-cluster-management:managedclusterset:view:gldev'
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL All OpenShift Development
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: 'open-cluster-management:managedclusterset:view:gldev'

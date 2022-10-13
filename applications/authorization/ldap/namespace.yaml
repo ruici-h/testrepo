@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ldap-sync
+  annotations:
+    openshift.io/display-name: Synchronise LDAP groups
+    openshift.io/description: CronJob that periodically queries LDAP group data and imports it into OpenShift

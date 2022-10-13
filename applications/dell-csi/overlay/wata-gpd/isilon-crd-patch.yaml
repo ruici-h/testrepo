@@ -1,0 +1,9 @@
+﻿- op: add
+  path: /spec/driver/authSecret
+  value: isilon-creds
+
+- op: replace
+  path: /metadata/namespace
+  value: isilon
+
+

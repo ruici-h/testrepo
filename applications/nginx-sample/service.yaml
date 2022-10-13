@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-sample-service
+spec:
+  selector:
+    app: nginx-sample
+  ports:
+  - name: nginx-http-8080
+    port: 8080
+    targetPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-sample-service-nodeport
+spec:
+  selector:
+    app: nginx-sample
+  type: NodePort
+  ports:
+  - name: nginx-http-8080
+    port: 8080
+    targetPort: 8080

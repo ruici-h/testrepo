@@ -1,0 +1,11 @@
+helm install cic citrix/citrix-ingress-controller --namespace citrix-k8s-cic \
+--set license.accept=yes \
+--set adcCredentialSecret='nslogin' \
+--set openshift=true \
+--set crds.install=true \
+--set nodeWatch=true \
+--set routeLabels='citrix=true' \
+--set ingressClass="{external-ingress-citrix}" \
+--set nsIP=10.4.1.60 \
+--set nsVIP=10.4.105.70 \
+--set nsSNIPS='["10.4.112.235"]'

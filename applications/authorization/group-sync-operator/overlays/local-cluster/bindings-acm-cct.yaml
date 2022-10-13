@@ -1,0 +1,603 @@
+#
+# Cluster lifecycle RBAC
+#
+# -------------------------------------
+#
+# wata-dev-cct-01
+#
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin:managedcluster:wata-dev-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-dev-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Dev Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:admin:wata-dev-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin
+  namespace: wata-dev-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-dev-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Dev Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view:managedcluster:wata-dev-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-dev-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Dev Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Dev Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:view:wata-dev-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view
+  namespace: wata-dev-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-dev-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Dev Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Dev Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+#
+# wata-stage-cct-01
+#
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin:managedcluster:wata-stage-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-stage-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Sit Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:admin:wata-stage-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin
+  namespace: wata-stage-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-stage-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Sit Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view:managedcluster:wata-stage-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-stage-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Sit Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Sit Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:view:wata-stage-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view
+  namespace: wata-stage-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-stage-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Sit Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Sit Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view  
+#
+# wata-sit-cct-01
+#
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin:managedcluster:wata-sit-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-sit-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Sit Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:admin:wata-sit-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin
+  namespace: wata-sit-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-sit-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Sit Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view:managedcluster:wata-sit-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-sit-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Sit Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Sit Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:view:wata-sit-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view
+  namespace: wata-sit-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-sit-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Sit Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Sit Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+#
+# qasp-uat-cct-01
+#
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin:managedcluster:qasp-uat-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasp-uat-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Uat Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:admin:qasp-uat-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin
+  namespace: qasp-uat-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasp-uat-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Uat Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view:managedcluster:qasp-uat-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasp-uat-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Uat Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Uat Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:view:qasp-uat-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view
+  namespace: qasp-uat-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasp-uat-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Uat Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Uat Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+#
+# qasf-prod-cct-01
+#
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin:managedcluster:qasf-prod-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasf-prod-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:admin:qasf-prod-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin
+  namespace: qasf-prod-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasf-prod-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view:managedcluster:qasf-prod-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasf-prod-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:view:qasf-prod-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view
+  namespace: qasf-prod-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasf-prod-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+#
+# qasp-prod-cct-01
+#
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin:managedcluster:qasp-prod-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasp-prod-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:admin:qasp-prod-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin
+  namespace: qasp-prod-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasp-prod-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view:managedcluster:qasp-prod-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasp-prod-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:view:qasp-prod-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view
+  namespace: qasp-prod-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasp-prod-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+#
+# wata-prod-cct-01
+#
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin:managedcluster:wata-prod-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-prod-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:admin:wata-prod-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin
+  namespace: wata-prod-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-prod-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view:managedcluster:wata-prod-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-prod-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:view:wata-prod-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view
+  namespace: wata-prod-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: wata-prod-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Prod Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+#
+# qasf-uat-cct-01
+#
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin:managedcluster:qasf-uat-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasf-uat-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Uat Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:admin:qasf-uat-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:admin
+  namespace: qasf-uat-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasf-uat-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Uat Admins (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view:managedcluster:qasf-uat-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasf-uat-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Uat Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Uat Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: open-cluster-management:view:qasf-uat-cct-01
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: open-cluster-management:view
+  namespace: qasf-uat-cct-01
+  labels:
+    cluster.open-cluster-management.io/clusterset: cct
+    cluster: qasf-uat-cct-01
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Uat Admins (Universal)
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL CCT OpenShift Uat Viewers (Universal)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view    

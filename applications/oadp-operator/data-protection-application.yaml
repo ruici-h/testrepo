@@ -1,0 +1,32 @@
+#
+# Configure location for backend S3 storage used by the oadp operator.
+#
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: ecs-s3-data
+  namespace: openshift-adp
+spec:
+  configuration:
+    velero:
+      defaultPlugins:
+        - aws
+        - openshift
+    restic:
+      enable: true
+  backupLocations:
+    - velero:
+        config:
+          profile: "default"
+          region: minio
+          s3Url: http://canrecs01data.americas.cshare.net:9020
+          insecureSkipTLSVerify: "true"
+          s3ForcePathStyle: "true"
+        provider: aws
+        default: true
+        credential:
+          key: cloud
+          name:  ecs-s3-backup-credentials
+        objectStorage:
+          bucket: infra-cluster
+          prefix: acm-hub-backup

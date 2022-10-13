@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- namespace-isilon.yaml
+- dell-csi-operator.yaml
+- empty-secret.yaml
+- isilon_v220_ops_49/isilon_v220_ops_49.yaml
+#- crd-dell-replication-group.yaml
+- replicationcrds.all.yaml
+
+patchesJson6902:
+  - path: isilon-crd-patch.yaml
+    target:
+      version: v1
+      group: storage.dell.com
+      kind: CSIIsilon
+      name: isilon 
+  - path: isilon-config-params-patch.yaml
+    target:
+      version: v1
+      group: ""
+      #group: core does not work !
+      kind: ConfigMap
+      name: isilon-config-params

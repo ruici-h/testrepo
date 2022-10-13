@@ -1,0 +1,48 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: GroupSync
+metadata:
+  labels:
+    backend: azure
+  name: azuread-groupsync
+spec:
+  schedule: 0/20 * * * *
+  providers:
+    - name: azure
+      azure:
+        credentialsSecret:
+          kind: Secret
+          name: azuread-service-principal
+          namespace: group-sync-operator
+        groups:
+          - GBL All OpenShift Cluster Admins
+          - 'GBL ALL OpenShift ACM Subscription Admins (Universal)'
+          - 'GBL CCS OpenShift US Test Cluster Admin (Universal)'
+          - 'GBL CCS OpenShift AU Test Cluster Admin (Universal)'
+          - 'GBL CCS OpenShift UK Test Cluster Admin (Universal)'
+          - 'GBL CCS OpenShift CA Test Cluster Admin (Universal)'
+          - 'GBL CCS OpenShift US Test Cluster View (Universal)'
+          - 'GBL CCS OpenShift AU Test Cluster View (Universal)'
+          - 'GBL CCS OpenShift UK Test Cluster View (Universal)'
+          - 'GBL CCS OpenShift CA Test Cluster View (Universal)'
+          - 'GBL CCS OpenShift US Prod Cluster Admin (Universal)'
+          - 'GBL CCS OpenShift AU Prod Cluster Admin (Universal)'
+          - 'GBL CCS OpenShift UK Prod Cluster Admin (Universal)'
+          - 'GBL CCS OpenShift CA Prod Cluster Admin (Universal)'
+          - 'GBL CCS OpenShift US Prod Cluster View (Universal)'
+          - 'GBL CCS OpenShift AU Prod Cluster View (Universal)'
+          - 'GBL CCS OpenShift UK Prod Cluster View (Universal)'
+          - 'GBL CCS OpenShift CA Prod Cluster View (Universal)'
+          - 'GBL CCT OpenShift Dev Admins (Universal)'
+          - 'GBL CCT OpenShift Sit Admins (Universal)'
+          - 'GBL CCT OpenShift Uat Admins (Universal)'
+          - 'GBL CCT OpenShift Prod Admins (Universal)'
+          - 'GBL CCT OpenShift Dev Viewers (Universal)'
+          - 'GBL CCT OpenShift Sit Viewers (Universal)'
+          - 'GBL CCT OpenShift Uat Viewers (Universal)'
+          - 'GBL CCT OpenShift Prod Viewers (Universal)'
+          - 'GBL ALL OpenShift EquatePlus View (Universal)'
+          - GBL All OpenShift EquatePlus
+          - GBL All Openshift Global DEV Admins
+          - GBL All OpenShift Global Development
+        prune: false
+        url: 'https://login.microsoftonline.com/'

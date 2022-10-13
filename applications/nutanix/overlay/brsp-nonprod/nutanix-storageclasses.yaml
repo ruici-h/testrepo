@@ -1,0 +1,39 @@
+#
+# New, nonprod storageclass.
+#
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: nutanix-files
+  namespace: ntnx-system
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+provisioner: csi.nutanix.com
+parameters:
+  dynamicProv: ENABLED
+  nfsServerName: CSEVTIFS4C # nfsServerName above is File Server Name in Prism without DNS suffix, not the FQDN.
+  nfsPath: /openshift-test
+  csi.storage.k8s.io/provisioner-secret-name: nutanix-secret-bristol-nonprod
+  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system
+  storageType: NutanixFiles
+reclaimPolicy: Delete
+---
+#
+# legacy dc specific storage class
+#
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: brsp-nutanix-files
+  namespace: ntnx-system
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+provisioner: csi.nutanix.com
+parameters:
+  dynamicProv: ENABLED
+  nfsServerName: CSEVTIFS4C # nfsServerName above is File Server Name in Prism without DNS suffix, not the FQDN.
+  nfsPath: /openshift-test
+  csi.storage.k8s.io/provisioner-secret-name: nutanix-secret-bristol-nonprod
+  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system
+  storageType: NutanixFiles
+reclaimPolicy: Delete

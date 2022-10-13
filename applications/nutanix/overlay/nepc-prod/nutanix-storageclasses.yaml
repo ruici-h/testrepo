@@ -1,0 +1,16 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: nutanix-files
+  namespace: ntnx-system
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+provisioner: csi.nutanix.com
+parameters:
+  dynamicProv: ENABLED
+  nfsServerName: NEPCVPINTXFS1 # nfsServerName above is File Server Name in Prism without DNS suffix, not the FQDN.
+  nfsPath: /openshift-nepc-prod-ccs-01
+  csi.storage.k8s.io/provisioner-secret-name: nutanix-secret-newport-prod
+  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system
+  storageType: NutanixFiles
+reclaimPolicy: Delete

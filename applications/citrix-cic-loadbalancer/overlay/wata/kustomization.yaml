@@ -1,0 +1,40 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+- ../../base
+
+resources:
+- citrix-cic-crd.yaml
+
+#clusterrole.rbac.authorization.k8s.io/system:openshift:scc:privileged added: "citrix"
+
+## add patch of CRD maybe - currently just copy pasing the whole CRD
+
+# patches:
+#   #- May require operator group to be pathced to add other namesspaces for public clusters use kustomization to adapt for those clusters
+# - patch: |-
+#     - op: replace
+#       path: /spec/template/spec/containers/0/env/0
+#       value:
+#         name: "NS_IP"
+#         value: "10.4.2.250"
+#     - op: add
+#       path: /spec/template/spec/containers/0/env/-
+#       value:
+#         name: NS_APPS_NAME_PREFIX
+#         value: "wata-test-gpd-01"
+
+#   target:
+#     kind: Deployment
+#     name: cic-k8s-ingress-controller
+
+
+    ## TO enable multiple clsuters on 1 LB we will need several VIPs I think so we will need to specify
+    #NS_VIP for each clsuter
+
+      ##SHOULD Add the following so the cluster from which the commands came is known.
+      ### NS_APPS_NAME_PREFIX	, Optional, 	By default, the Citrix ingress controller adds “k8s” as prefix to the Citrix ADC entities such as, content switching (CS) virtual server, load balancing (LB) virtual server and so on. You can now customize the prefix using the NS_APPS_NAME_PREFIX environment variable in the Citrix ingress controller deployment YAML file. You can use alphanumeric characters for the prefix and the prefix length should not exceed 8 characters.
+      
+    
+        # imagePullPolicy: Always

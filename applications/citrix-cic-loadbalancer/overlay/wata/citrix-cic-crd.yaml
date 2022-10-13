@@ -1,0 +1,73 @@
+kind: CitrixIngressController
+apiVersion: citrix.com/v1alpha1
+metadata:
+  name: cic
+  namespace: citrix-k8s-cic
+spec:
+  adcCredentialSecret: 'nslogin'
+  clusterName: 'wata-test-gpd-01'
+  cncPbr: false
+  coeConfig:
+    distributedTracing:
+      enable: false
+      samplingrate: 100
+    endpoint:
+      server: ''
+    required: false
+    timeseries:
+      auditlogs:
+        enable: false
+      events:
+        enable: false
+      metrics:
+        enable: false
+        mode: avro
+      port: 30002
+    transactions:
+      enable: false
+      port: 30001
+  crds:
+    install: false
+    retainOnDelete: false
+  defaultSSLCertSecret: ''
+  entityPrefix: ''
+  exporter:
+    image: >-
+      registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8
+    ports:
+      containerPort: 8888
+    pullPolicy: Always
+    required: false
+  ignoreNodeExternalIP: false
+  image: >-
+    registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821
+  imagePullSecrets: []
+  ingressClass: [external-ingress-citrix]
+  ipam: false
+  kubernetesURL: ''
+  license:
+    accept: 'yes'
+  logLevel: INFO
+  logProxy: ''
+  namespaceLabels: ''
+  nodeSelector:
+    key: ''
+    value: ''
+  nodeWatch: false
+  nsCookieVersion: '0'
+  nsHTTP2ServerSide: 'OFF'
+  nsIP: 10.4.2.250
+  nsPort: 443
+  nsProtocol: HTTPS
+  nsSNIPS: ''
+  nsVIP: ''
+  openshift: true
+  podIPsforServiceGroupMembers: false
+  pullPolicy: Always
+  routeLabels: 'citrix=true'
+  serviceAccount:
+    create: true
+  serviceClass: []
+  setAsDefaultIngressClass: false
+  tolerations: []
+  updateIngressStatus: false

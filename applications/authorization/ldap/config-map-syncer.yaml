@@ -1,0 +1,31 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ldap-group-syncer
+data:
+  sync.yaml: |                                 
+    kind: LDAPSyncConfig
+    apiVersion: v1
+    url: ldap://cshare.net
+    insecure: true
+    bindDN: CN=GL_SVC_AAD_LDAPSync,OU=Service Accounts,DC=global,DC=cshare,DC=net
+    bindPassword:
+      file: "/etc/secrets/bindPassword"
+    augmentedActiveDirectory:
+      groupsQuery:
+        baseDN: "OU=Security Groups,OU=OpenShift,DC=global,DC=cshare,DC=net"
+        scope: one
+        derefAliases: never
+        pageSize: 0
+      groupUIDAttribute: dn
+      groupNameAttributes: [ cn ]
+      usersQuery:
+        baseDN: "DC=cshare,DC=net"
+        scope: sub
+        derefAliases: always
+        filter: (objectClass=user)
+        pageSize: 0
+      userNameAttributes: [ userPrincipalName ]
+      groupMembershipAttributes: [ memberOf ]
+#    ca: /etc/ldap-ca/ca.crt
+#        baseDN: "OU=Users,OU=OpenShift,DC=global,DC=cshare,DC=net"

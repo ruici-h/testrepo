@@ -1,0 +1,114 @@
+
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: nginx-sample-basedomain
+  namespace: nginx-sample
+spec:
+  port:
+    targetPort: nginx-http-8080
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: nginx-sample-service
+    weight: 100
+  wildcardPolicy: None
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: nginx-sample-vanity
+  namespace: nginx-sample
+spec:
+  host: nginx-sample.apps.us-prod-ccs-01.americas.cshare.net
+  port:
+    targetPort: nginx-http-8080
+  tls:
+    caCertificate: |-
+      -----BEGIN CERTIFICATE-----
+      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
+      SlXiQGzlqndHvcIl+WhDPXoSdrK6y1W5
+      -----END CERTIFICATE-----
+      subject=/C=AU/O=Computershare Ltd/CN=Computershare Ltd Root CA SHA256
+      issuer=/C=AU/O=Computershare Ltd/CN=Computershare Ltd Root CA SHA256
+      -----BEGIN CERTIFICATE-----
+      MIIFgzCCA2ugAwIBAgIQVqJNmkYC87ROWYNK+xj4KzANBgkqhkiG9w0BAQsFADBU
+      MQswCQYDVQQGEwJBVTEaMBgGA1UEChMRQ29tcHV0ZXJzaGFyZSBMdGQxKTAnBgNV
+      BAMTIENvbXB1dGVyc2hhcmUgTHRkIFJvb3QgQ0EgU0hBMjU2MB4XDTE2MDUyNjE0
+      MTY1MVoXDTQwMDUyNjE0MjY0OVowVDELMAkGA1UEBhMCQVUxGjAYBgNVBAoTEUNv
+      bXB1dGVyc2hhcmUgTHRkMSkwJwYDVQQDEyBDb21wdXRlcnNoYXJlIEx0ZCBSb290
+      IENBIFNIQTI1NjCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALXjr1oL
+      7yzdpiv/LBykuBqrFh5SDzUl3ew2C4VKl5OBf6z2VJ6QdD2Mn4/N6CJB1qeUaoNT
+      OA29iCSRPuKDQLrih6n729TpB7nB9wPp0XcmDpEhjOlpRtabrkvqgt6zAlO4ficq
+      xutjuO9N0RMfe/DMECMZnYAHl51M6RyOpXU1DaWrkDyY3eyIZBCAivv+B2c3XHP8
+      nYEjp9hOQN0YheVzPlP0t46SO5Ksjd8WZORNGEQ+daMd0UBNT/SpyEIxuY91Mkfx
+      DHOLIrVIoJPBQ05JSdZzbM7Dt/ZuH2HO3azI4PtEFrHSJTKNC/sIVJ2aPPguoQpQ
+      SacVpw2JFfI1hgCsjKOZXW1BJgW+byFZW2MouskIoPq+lr84xlI/eJQtmJif5SfL
+      uvKJSBahF4yxt1brEftHAdpzXkrr37hdrxY8Suylk4wVh4kELm10+dNSW9Vm7rm5
+      iBNY0HnXpsAY/I+9Rb6vMiU9eYauZatyWBy4vo7rqzKu+hH6lxFurDK52YMwlici
+      TFcV7Q+yYuH4xqJbCfsx9fU+KreQmdn572/+v2HPVDCAGuHFNBuZRYSCdQwhTJDa
+      KOpaTtylMPmG6o12RlPBoT5YLNiB5dxJEQA1OnBWz5yYClBwonqsvfzoB0JWZPs3
+      h78ATqw1X/T8UfmAwp/UbJoyAZyxjQgk34nLAgMBAAGjUTBPMAsGA1UdDwQEAwIB
+      hjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBQiX5ydaJ6AB76dMXp3c5Br2r7/
+      1zAQBgkrBgEEAYI3FQEEAwIBADANBgkqhkiG9w0BAQsFAAOCAgEAVrSeYbRIEZw3
+      55Nise4n0Mkb9LAzeL5sfVIn4S6uASZ+HulSC3HnGi1JGtw+isZ3woZ38N45gECK
+      RpJ8ojVWenJLGcCov1l6Yvw/KFn6HMGUyeWqDbRkuprpY7Shm2fhaSMrXEDDkG8z
+      ro6L6btM5dtcLiFF9VamFTzk73W1mZet5uP1iT82T0BB75mSF243dXzLOCzpFa6j
+      lv1W8Cn+S7ipS3bCFYWvIP+rIlqiLlMzsq9B0lLrLa4objgn6NTBdIRsuSL68SIC
+      ixjXdlj8KjBLiAmFpZvCfsyfHR7QgYGrslPV7K5TC/r/RzOiDaGKuD0PrA/dRiGA
+      LD8J1l52froVr0cCobUOQQvOHm1LV+7M/cYwOMkLx7WwT713qzTNkZysbcyr1VOH
+      qkkpeKv58+aVv5zG5saOCsSKZOMVnQqJOt2NJ2idS+2CGpXlhlSNZO+7W4ABceP1
+      vgAryw2z54tA5am0FABlQlR3at0851KMqqTduMDx2yGbQ189nPstipW9V+VuFQq0
+      PsIlmegrOrYFynGvbDd1/gpbvpx+vX6JtyVZWXLxsWDKuyPxbpZcct594Sh2Cjwb
+      Cj+6VCcJWAXTnkBTaNu0+LIckDgzsIGDwS9PSB1NaEHVmnoyzGvaKoSywv22W8K9
+      CDVIs+QqpwkTSj0svhVqQ92xmgGy8eE=
+      -----END CERTIFICATE-----
+    certificate: |-
+      -----BEGIN CERTIFICATE-----
+      REDACTED .....  
+
+
+      -----END CERTIFICATE-----
+    insecureEdgeTerminationPolicy: Redirect
+    key: |
+      -----BEGIN PRIVATE KEY-----
+      REDACTED.......
+
+      -----END PRIVATE KEY-----
+    termination: edge
+  to:
+    kind: Service
+    name: nginx-sample-service
+    weight: 100
+  wildcardPolicy: None
+

@@ -1,0 +1,16 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: citrix-k8s-cic
+
+---
+
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: citrix-k8s-og
+  namespace: citrix-k8s-cic
+spec:
+  targetNamespaces:
+  - citrix-k8s-cic
+  #- May require operator group in other namesspaces for public clusters use kustomization to adapt for those clusters

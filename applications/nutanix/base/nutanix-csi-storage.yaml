@@ -1,0 +1,8 @@
+#This is the nutanix storage CRD. This CRD does not require spec
+#https://github.com/nutanix/openshift/tree/main/operators/csi
+apiVersion: crd.nutanix.com/v1alpha1
+kind: NutanixCsiStorage
+metadata:
+  name: nutanixcsistorage
+  namespace: ntnx-system
+spec: {}

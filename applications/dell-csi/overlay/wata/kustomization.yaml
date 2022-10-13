@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+#only items to change are the resources to point to local overlay
+resources:
+- wata-isilon-storageclasses.yaml
+
+bases:
+- ../../base
+
+##NOTE: no longer need to have sperate secrets per Datacenter 
+# The isilon-creds secret has a list of all API details for all Isilons - note it sets wata as the "default" 
+#but the storage classes control which isilon is used anyway.
+
+##removed due to above.
+# patches:
+# - target:
+#     kind: CSIIsilon
+#     name: isilon
+#   patch: |-
+#     apiVersion: storage.dell.com/v1
+#     kind: CSIIsilon
+#     metadata:
+#       name: isilon
+#       namespace: isilon
+#     spec:
+#       driver:
+#         authSecret: wata-isilon-creds
+        
+

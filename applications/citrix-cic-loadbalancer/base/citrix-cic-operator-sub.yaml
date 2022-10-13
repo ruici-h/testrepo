@@ -1,0 +1,13 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: citrix-ingress-controller-operator
+  namespace: openshift-operators
+  labels:
+    app: citrix-ingress-controller-operator
+spec:
+  channel: alpha
+  installPlanApproval: Automatic
+  name: citrix-ingress-controller-operator
+  source: certified-operators
+  sourceNamespace: openshift-marketplace

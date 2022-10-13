@@ -1,0 +1,6 @@
+$patch: delete
+apiVersion: storage.dell.com/v1
+kind: CSIIsilon
+metadata:
+  name: isilon
+  namespace: isilon

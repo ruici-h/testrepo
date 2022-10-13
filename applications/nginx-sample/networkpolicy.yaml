@@ -1,0 +1,23 @@
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-loadbalancer
+  namespace: nginx-sample
+spec:
+  ingress: 
+  - {}
+        # Note when using Citrix Ingress Controller the external traffic is sourced from the Loadbalancer SNIP 
+        # this is an LB interface on the host subnet, the traffic from which is sent to the Pod IPs.
+  # - ports:
+  #   ## Note when using Citrix Ingress Controller these are the Container ports 
+  #   - port: 8443
+  #     protocol: TCP
+  #   - port: 8080
+  #     protocol: TCP
+  #   - port: 6080
+  #     protocol: TCP
+  podSelector: {}
+  policyTypes:
+  - Ingress
+

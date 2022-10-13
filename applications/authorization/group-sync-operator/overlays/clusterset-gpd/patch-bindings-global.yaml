@@ -1,0 +1,7 @@
+#Not currently applied see kustomization.
+- op: add
+  path: /subjects/-
+  value:
+    kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: GBL All OpenShift #add Specific Admin Groups to gpd

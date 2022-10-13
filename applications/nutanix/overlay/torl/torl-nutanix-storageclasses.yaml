@@ -1,0 +1,37 @@
+#
+# New, nonprod storageclass.
+#
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: nutanix-files
+  namespace: ntnx-system
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+provisioner: csi.nutanix.com
+parameters:
+  dynamicProv: ENABLED
+  nfsServerName: torlvpintxfs1 # nfsServerName above is File Server Name in Prism without DNS suffix, not the FQDN.
+  nfsPath: /openshift_torl_test_ccs_01
+  csi.storage.k8s.io/provisioner-secret-name: nutanix-secret-toronto
+  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system
+  storageType: NutanixFiles
+reclaimPolicy: Delete
+---
+# Legacy dc specific storage class
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: torl-nutanix-files
+  namespace: ntnx-system
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+provisioner: csi.nutanix.com
+parameters:
+  dynamicProv: ENABLED
+  nfsServerName: torlvpintxfs1 # nfsServerName above is File Server Name in Prism without DNS suffix, not the FQDN.
+  nfsPath: /openshift_torl_test_ccs_01
+  csi.storage.k8s.io/provisioner-secret-name: nutanix-secret-toronto
+  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system
+  storageType: NutanixFiles
+reclaimPolicy: Delete

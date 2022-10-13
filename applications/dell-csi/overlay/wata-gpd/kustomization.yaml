@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+- ../../base
+
+# Delete resources we want to replace and test
+patchesStrategicMerge:
+- delete-csiisilon.yaml
+- delete-config-params.yaml
+
+resources:
+- wata-isilon-storageclasses.yaml
+# Updated Dell CSI resources
+- isilon_v230_ops_49.yaml
+
+patchesJson6902:
+  - path: isilon-crd-patch.yaml
+    target:
+      version: v1
+      group: storage.dell.com
+      kind: CSIIsilon
+      name: isilon 
+  - path: isilon-config-params-patch.yaml
+    target:
+      version: v1
+      group: ""
+      #group: core does not work !
+      kind: ConfigMap
+      name: isilon-config-params

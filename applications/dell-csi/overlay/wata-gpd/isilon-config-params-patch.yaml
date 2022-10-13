@@ -1,0 +1,10 @@
+﻿
+- op: replace
+  path: /metadata/namespace
+  value: isilon
+
+- op: replace
+  path: /data/driver-config-params.yaml
+  value: |
+   CSI_LOG_LEVEL: "info"
+   

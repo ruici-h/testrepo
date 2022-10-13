@@ -1,0 +1,28 @@
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  name: template-subscription
+spec:
+  channel: citrix-cic/citrix-chart-repo
+  name: citrix-ingress-controller
+  packageFilter:
+    version: 1.26.7
+  packageOverrides:
+    - packageAlias: citrix-ingress-controller
+      packageName: citrix-ingress-controller
+      packageOverrides:
+        - path: spec
+          value:
+            licence:
+              accept: yes
+            adcCredentialSecret: citrix-nslogin
+            crds:
+              install: true
+            nodeWatch: true
+            routeLabels: 'citrix=true'
+#            ingressClass: '{external-ingress-citrix}'
+#            openshift: true
+  placement:
+    placementRef:
+      kind: PlacementRule
+      name: REPLACE_ME

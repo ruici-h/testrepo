@@ -1,0 +1,31 @@
+#
+# Grant cluster-admin to cct specific users.
+#
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cct-aad-cluster-admins
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: 'GBL CCT OpenShift Uat Admins (Universal)'
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+---
+#
+# Grant cluster-reader to cct specific users.
+#
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cct-aad-cluster-readers
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: 'GBL CCT OpenShift Uat Viewers (Universal)'
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-reader

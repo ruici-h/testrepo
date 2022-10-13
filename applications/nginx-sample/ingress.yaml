@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-sample-vanity
+  namespace: nginx-sample
+  annotations:
+    route.openshift.io/termination: "edge" 
+spec:
+  rules:
+  - host: nginx-sample.apps.us-prod-ccs-01.americas.cshare.net
+    http:
+      paths:
+      - backend:
+          service:
+            name: nginx-sample-service
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - nginx-sample.apps.us-prod-ccs-01.americas.cshare.net
+    secretName: apps-us-prod-ccs-01-tls

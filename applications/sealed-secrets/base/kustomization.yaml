@@ -1,0 +1,22 @@
+#
+# Based on Red Hat Community of Practice -
+# https://github.com/redhat-cop/gitops-catalog/tree/main/sealed-secrets-operator
+#
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- namespace.yaml
+#
+# COP version uses URL reference.
+# For security reasons, the Computershare version has been downloaded to
+# the GitOps repo and manually vetted.
+#
+# - https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.17.3/controller.yaml
+#- bitnami/v0.17.3/controller.yaml
+# - https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.17.5/controller.yaml
+- bitnami/v0.17.5/controller.yaml
+#
+# Dummy sample secret to test SealedSecret operation.
+#
+- test-secret.yaml

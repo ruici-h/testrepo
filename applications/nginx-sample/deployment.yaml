@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-sample
+  annotations:
+    admission.stackrox.io/break-glass: "ticket-1234"
+  labels:
+    app: nginx-sample
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-sample
+  template:
+    metadata:
+      labels:
+        app: nginx-sample
+    spec:
+      containers:
+      - name: nginx
+        image: quay.io/redhattraining/hello-world-nginx
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        imagePullPolicy: Always
+#        image: quay.io/jpacker/nginx:1.16.1

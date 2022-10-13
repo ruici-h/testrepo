@@ -1,0 +1,32 @@
+
+## Dell isilon CRD comes directly from with no changes
+https://github.com/dell/dell-csi-operator/tree/main/samples
+
+UPGRADES 
+You should slecet the sample from the above link with the Isilon version and the matching OpenShift version
+e.g. v2.2.0 of Isilon Driver and then OpenShift 4.9
+is
+isilon_v220_ops_49.yaml
+
+Add this to a new folder with the new version name.
+Then update the kustomization's resource in this folder to point to the new version.
+
+
+## The dell replication controller 
+
+
+This deploys the dell replication controller and it's associated resources such as namespace etc are
+controller.yaml
+this is a direct copy from
+https://github.com/dell/csm-replication/tree/main/deploy
+This deploys the controller and it's dependent resources but it does not make it start until further 
+secrets and config maps are deployed.  These are done with repctl per this instruction
+
+The CRD definition is then deployed as is through
+replicationcrds.all.yaml
+this is also taken as is from the above DELL repo.
+
+The Install is Adapted from:
+Adapted from https://dell.github.io/csm-docs/docs/replication/deployment/install-repctl/
+the above uses repctl to deploy base resources in Step 2, which is done here by ACM.
+The Step 3 still needs to be done by hand using repctl this enables the replication controllers on clusters to communicate with each other.  Step3 copies the API token from the "default" service account in the replication controller's namespace to a secret in the other cluster's replication controller namspace.

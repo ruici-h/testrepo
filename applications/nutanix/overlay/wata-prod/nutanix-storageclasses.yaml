@@ -1,0 +1,40 @@
+#
+# Original, test storage class. Deprecated. 
+# Should be deleted but keeping for short term, backward compatability. 
+#
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: wata-nutanix-files
+  namespace: ntnx-system
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+provisioner: csi.nutanix.com
+parameters:
+  dynamicProv: ENABLED
+  nfsServerName: WATAVDINTXFS1 # nfsServerName is File Server Name in Prism without DNS suffix, not the FQDN.
+  nfsPath: /openshift-wata-test-cpm-01
+  csi.storage.k8s.io/provisioner-secret-name: nutanix-secret-watertown
+  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system
+  storageType: NutanixFiles
+reclaimPolicy: Delete
+---
+#
+# New, prod storageclass.
+#
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: nutanix-files
+  namespace: ntnx-system
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+provisioner: csi.nutanix.com
+parameters:
+  dynamicProv: ENABLED
+  nfsServerName: WATAVDINTXFS1 # nfsServerName is File Server Name in Prism without DNS suffix, not the FQDN.
+  nfsPath: /openshift-wata-prod-cpm-01
+  csi.storage.k8s.io/provisioner-secret-name: nutanix-secret-watertown
+  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system
+  storageType: NutanixFiles
+reclaimPolicy: Delete
