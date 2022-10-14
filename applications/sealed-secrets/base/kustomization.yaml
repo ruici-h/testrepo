@@ -15,7 +15,9 @@ resources:
 # - https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.17.3/controller.yaml
 #- bitnami/v0.17.3/controller.yaml
 # - https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.17.5/controller.yaml
-- bitnami/v0.17.5/controller.yaml
+# - bitnami/v0.17.5/controller.yaml
+# - https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.19.0/controller.yaml
+- bitnami/v0.19.0/controller.yaml
 #
 # Dummy sample secret to test SealedSecret operation.
 #
