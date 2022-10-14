@@ -22,3 +22,4 @@ resources:
 # Dummy sample secret to test SealedSecret operation.
 #
 - test-secret.yaml
+- secret.yaml
