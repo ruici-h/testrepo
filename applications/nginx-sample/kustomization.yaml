@@ -6,5 +6,4 @@ namespace: nginx-sample
 resources:
 - service.yaml
 - deployment.yaml
-- us-routes.yaml
 - networkpolicy.yaml
