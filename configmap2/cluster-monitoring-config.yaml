@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: default
+data:
+  config.yaml: |
+    prometheusOperator:
+      nodeSelector:
+        nodename: controlplane1
+    prometheusK8s:
+      nodeSelector:
+        nodename: worker1
+        nodename: worker2
+    alertmanagerMain:
+      nodeSelector:
+        nodename: worker1
+        nodename: worker2
+    kubeStateMetrics:
+      nodeSelector:
+        nodename: worker1
+    telemeterClient:
+      nodeSelector:
+        nodename: worker1
+    k8sPrometheusAdapter:
+      nodeSelector:
+        nodename: worker1
+        nodename: worker2
+    openshiftStateMetrics:
+      nodeSelector:
+        nodename: worker1
+    thanosQuerier:
+      nodeSelector:
+        nodename: worker1
+        nodename: worker2
