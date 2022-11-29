@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+  - ../../../base/2-hub
+patchesJson6902:
+  - target:
+      group: operator.open-cluster-management.io
+      version: v1
+      kind: MultiClusterHub
+      name: multiclusterhub
+      namespace: open-cluster-management
+    path: config.yaml

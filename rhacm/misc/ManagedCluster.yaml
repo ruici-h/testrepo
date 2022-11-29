@@ -1,0 +1,50 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: __CLUSTER_NAME__
+  labels:
+    cluster.open-cluster-management.io/managedCluster: __CLUSTER_NAME__
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: auto-import-secret
+  namespace: __CLUSTER_NAME__
+stringData:
+  autoImportRetry: "5"
+  token: __TOKEN__
+  server: "https://api.__CLUSTER_NAME_FQDN__:6443"
+type: Opaque
+---
+apiVersion: cluster.open-cluster-management.io/v1
+kind: ManagedCluster
+metadata:
+  name: __CLUSTER_NAME__
+  labels:
+    cloud: auto-detect
+    vendor: auto-detect
+spec:
+  hubAcceptsClient: true
+---
+apiVersion: agent.open-cluster-management.io/v1
+kind: KlusterletAddonConfig
+metadata:
+  name: __CLUSTER_NAME__
+  namespace: __CLUSTER_NAME__
+spec:
+  clusterName: __CLUSTER_NAME__
+  clusterNamespace: __CLUSTER_NAME__
+  applicationManager:
+    enabled: true
+  certPolicyController:
+    enabled: true
+  clusterLabels:
+    cloud: auto-detect
+    vendor: auto-detect
+    is-sensor: "true"
+  iamPolicyController:
+    enabled: true
+  policyController:
+    enabled: true
+  searchCollector:
+    enabled: true

@@ -1,0 +1,42 @@
+apiVersion: observability.open-cluster-management.io/v1beta2 # https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.4/html/apis/apis#observability-api
+kind: MultiClusterObservability
+metadata:
+  namespace: open-cluster-management-observability
+  name: observe
+spec:
+  imagePullPolicy: Always
+  imagePullSecret: multiclusterhub-operator-pull-secret
+  enableDownsampling: true
+  observabilityAddonSpec:
+    enableMetrics: true
+    interval: 300
+    resources:
+      requests:
+        cpu: 100m  # default 100m
+        memory: 100Mi  # default 100Mi
+  retentionConfig:
+    blockDuration: 2h # default 2h
+    cleanupInterval: 5m # default 5m
+    deleteDelay: 48h # default 48h
+    retentionInLocal: 24h # default 24h
+    retentionResolution1h: 90d  # default 0d
+    retentionResolution5m: 14d  # default 180d
+    retentionResolutionRaw: 5d  # default 30d
+  compact: # https://thanos.io/v0.17/components/compact.md/#compactor
+    resources:
+      requests:
+        cpu: 100m # default 100m
+        memory: 512Mi # default 512Mi
+  storeMemcached:
+    replicas: 3 # default 3?
+    maxItemSize: 1m, min:1k, max:1024m  # default 1m, min:1k, max:1024m
+  storageConfig:
+    alertmanagerStorageSize: 260Gi # default 1Gi
+    compactStorageSize: 270Gi # default is 100Gi
+    metricObjectStorage:
+      key: thanos.yaml
+      name: thanos-object-storage
+    receiveStorageSize: 280Gi  # default 100Gi
+    ruleStorageSize: 290Gi  # default 1Gi
+    storageClass: gce-standard-csi  # default gp2
+    storeStorageSize: 300Gi  # default 10Gi

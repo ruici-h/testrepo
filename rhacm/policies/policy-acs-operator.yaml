@@ -1,0 +1,304 @@
+# This policy deploys the Red Hat Advanced Cluster Security Secure Cluster
+# Services to all OpenShift managed clusters.  Note that it is set to
+# enforce by default and it requires RHACM 2.3 template support.
+#
+# Prior to applying this policy you must visit
+# https://github.com/stolostron/advanced-cluster-security
+# and follow the instructions there to deploy prerequisite bundles
+# needed by the Secure Cluster Services for communicating with the
+# Central server.
+#
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-advanced-managed-cluster-security
+  namespace: caas-policies
+  annotations:
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+spec:
+  remediationAction: enforce
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: managed-cluster-security-ns
+        spec:
+          remediationAction: inform
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                  name: stackrox
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                  name: rhacs-operator
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: operators.coreos.com/v1
+                kind: OperatorGroup
+                metadata:
+                  name: rhacs-operator-group
+                  namespace: rhacs-operator
+                spec: {}
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: managed-cluster-security-operator-sub
+        spec:
+          remediationAction: inform
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: operators.coreos.com/v1alpha1
+                kind: Subscription
+                metadata:
+                  name: rhacs-operator
+                  namespace: rhacs-operator
+                spec:
+                  channel: latest
+                  installPlanApproval: Manual
+                  name: rhacs-operator
+                  source: redhat-operators
+                  sourceNamespace: openshift-marketplace
+                  config:
+                    resources:
+                      limits:
+                        cpu: 200m
+                        memory: 2Gi
+                      requests:
+                        cpu: 100m
+                        memory: 1Gi
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: managed-cluster-security-endpoints
+        spec:
+          remediationAction: inform
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: platform.stackrox.io/v1alpha1
+                kind: SecuredCluster
+                metadata:
+                  namespace: stackrox
+                  name: stackrox-secured-cluster-services
+                spec:
+                  clusterName: |
+                    {{ fromSecret "open-cluster-management-agent" "hub-kubeconfig-secret" "cluster-name" | base64dec }}
+                  auditLogs:
+                    collection: Auto
+                  centralEndpoint: |
+                    {{ fromSecret "stackrox" "sensor-tls" "acs-host" | base64dec }}
+                  admissionControl:
+                    listenOnCreates: false
+                    listenOnEvents: true
+                    listenOnUpdates: false
+                  perNode:
+                    collector:
+                      collection: KernelModule
+                      imageFlavor: Regular
+                    taintToleration: TolerateTaints
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: managed-cluster-security-rhacs-role
+        spec:
+          remediationAction: inform
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: rbac.authorization.k8s.io/v1
+                kind: Role
+                metadata:
+                  name: installplan-approver
+                  namespace: rhacs-operator
+                rules:
+                  - apiGroups:
+                      - operators.coreos.com
+                    resources:
+                      - installplans
+                      - subscriptions
+                    verbs:
+                      - get
+                      - list
+                      - patch
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: managed-cluster-security-rhacs-rb
+        spec:
+          remediationAction: inform
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: rbac.authorization.k8s.io/v1
+                kind: RoleBinding
+                metadata:
+                  name: installplan-approvers
+                  namespace: rhacs-operator
+                roleRef:
+                  apiGroup: rbac.authorization.k8s.io
+                  kind: Role
+                  name: installplan-approver
+                subjects:
+                  - kind: ServiceAccount
+                    name: installplan-approver-job
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: managed-cluster-security-rhacs-sa
+        spec:
+          remediationAction: inform
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: ServiceAccount
+                metadata:
+                  name: installplan-approver-job
+                  namespace: rhacs-operator
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: managed-cluster-security-rhacs-approver
+        spec:
+          remediationAction: inform
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                kind: Job
+                apiVersion: batch/v1
+                metadata:
+                  name: installplan-approver-rhacs
+                  #generateName: installplan-approver-rhacs-
+                  namespace: rhacs-operator
+                spec:
+                  parallelism: 1
+                  #completions: 1 <== makes things immuteable
+                  backoffLimit: 0
+                  #ttlSecondsAfterFinished: 120  <== policy will recreate this job if TTL is set
+                  completionMode: NonIndexed
+                  suspend: false
+                  template:
+                    metadata:
+                      labels:
+                        app: installplan-approver
+                    spec:
+                      restartPolicy: OnFailure
+                      activeDeadlineSeconds: 300
+                      serviceAccountName: installplan-approver-job
+                      automountServiceAccountToken: true
+                      enableServiceLinks: true
+                      terminationGracePeriodSeconds: 30
+                      securityContext:
+                        #allowPrivilegeEscalation: false
+                        #readOnlyRootFilesystem: true
+                        #privileged: false
+                        runAsNonRoot: true
+                        fsGroupChangePolicy: OnRootMismatch
+                      dnsPolicy: ClusterFirst
+                      containers:
+                        - name: installplan-approver
+                          imagePullPolicy: IfNotPresent
+                          image: registry.redhat.io/openshift4/ose-cli:v4.9
+                          command:
+                            - /bin/bash
+                            - -c
+                            - |
+                              export HOME=/tmp/approver
+                              #K8S='https://kubernetes.default.svc:443'
+                              ##K8S="https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}"
+                              #TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
+                              #CACERT=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+                              #NAMESPACE="$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)"
+                              echo "Approving operator install. Waiting a few seconds to make sure the InstallPlan gets created first."
+                              sleep $SLEEP
+                              ##for subscription in $(oc -n ${NAMESPACE} get subscriptions.operators.coreos.com -o jsonpath='{.items[0].metadata.name}'); do
+                              echo "Processing subscription '${SUBSCRIPTION}'"
+                              installplan=$(oc -n ${NAMESPACE} get subscriptions.operators.coreos.com --field-selector metadata.name=${SUBSCRIPTION} -o jsonpath='{.items[0].status.installPlanRef.name}')
+                              if [[ "$(oc -n ${NAMESPACE} get installplan ${installplan} -o jsonpath="{.spec.approved}")" == "false" ]]; then
+                                echo "Approving Subscription ${SUBSCRIPTION} with install plan $installplan"
+                                oc -n ${NAMESPACE} patch installplan $installplan --type=json -p='[{"op":"replace","path": "/spec/approved", "value": true}]'
+                              else
+                                echo "Install Plan '$installplan' already approved"
+                              fi
+                              ##done
+                          env:
+                            - name: SUBSCRIPTION
+                              value: rhacs-operator
+                            - name: SLEEP
+                              value: "20"
+                            - name: NAMESPACE
+                              valueFrom:
+                                fieldRef:
+                                  fieldPath: metadata.namespace
+                            - name: HTTP_PROXY
+                              value: http://internet.ford.com:83
+                            - name: HTTPS_PROXY
+                              value: http://internet.ford.com:83
+                            - name: NO_PROXY
+                              value: "localhost,127.0.0.1,.local,.svc,.internal,.ford.com,.googleapis.com,199.36.153.8/30,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,19.0.0.0/8"
+                          resources:
+                            requests:
+                              cpu: 500m
+                              memory: 500Mi
+                            limits:
+                              cpu: 500m
+                              memory: 500Mi
+                          terminationMessagePath: /dev/termination-log
+                          terminationMessagePolicy: File
+                          #securityContext:
+                          #  allowPrivilegeEscalation: false
+                          #  readOnlyRootFilesystem: true
+                          #  privileged: false
+                          #  runAsNonRoot: true
+                          #  #fsGroupChangePolicy: OnRootMismatch
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-advanced-managed-cluster-security
+  namespace: caas-policies
+placementRef:
+  name: placement-policy-advanced-managed-cluster-security
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+  - name: policy-advanced-managed-cluster-security
+    kind: Policy
+    apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-advanced-managed-cluster-security
+  namespace: caas-policies
+spec:
+  clusterConditions:
+    - status: "True"
+      type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - { key: is-sensor, operator: In, values: ["true"] }

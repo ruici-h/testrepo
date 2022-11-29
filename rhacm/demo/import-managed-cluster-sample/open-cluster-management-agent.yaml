@@ -1,0 +1,153 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    workload.openshift.io/allowed: "management"
+  name: "open-cluster-management-agent"
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: klusterlet
+  namespace: "open-cluster-management-agent"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "bootstrap-hub-kubeconfig"
+  namespace: "open-cluster-management-agent"
+type: Opaque
+data:
+  kubeconfig: "YXBpVmVyc2lvbjogdjEKY2x1c3RlcnM6Ci0gY2x1c3RlcjoKICAgIGNlcnRpZmljYXRlLWF1dGhvcml0eS1kYXRhOiA8UkVEQUNURUQ+CiAgICBzZXJ2ZXI6IGh0dHBzOi8vYXBpLnNiMTAyLmNhYXMuZ2NwLmZvcmQuY29tOjY0NDMKICBuYW1lOiBhcGktc2IxMDItY2Fhcy1nY3AtZm9yZC1jb206NjQ0MwotIGNsdXN0ZXI6CiAgICBjZXJ0aWZpY2F0ZS1hdXRob3JpdHktZGF0YTogPFJFREFDVEVEPgogICAgc2VydmVyOiBodHRwczovL2FwaS5zYjEwMi5jYWFzLmdjcC5mb3JkLmNvbTo2NDQzCiAgbmFtZTogZGVmYXVsdC1jbHVzdGVyCmNvbnRleHRzOgotIGNvbnRleHQ6CiAgICBjbHVzdGVyOiBkZWZhdWx0LWNsdXN0ZXIKICAgIG5hbWVzcGFjZTogZGVmYXVsdAogICAgdXNlcjogZGVmYXVsdC1hdXRoCiAgbmFtZTogZGVmYXVsdC1jb250ZXh0Ci0gY29udGV4dDoKICAgIGNsdXN0ZXI6IGFwaS1zYjEwMi1jYWFzLWdjcC1mb3JkLWNvbTo2NDQzCiAgICBuYW1lc3BhY2U6IGRlZmF1bHQKICAgIHVzZXI6IHRkZWljaGVsL2FwaS1zYjEwMi1jYWFzLWdjcC1mb3JkLWNvbTo2NDQzCiAgbmFtZTogZGVmYXVsdC9hcGktc2IxMDItY2Fhcy1nY3AtZm9yZC1jb206NjQ0My90ZGVpY2hlbApjdXJyZW50LWNvbnRleHQ6IGRlZmF1bHQvYXBpLXNiMTAyLWNhYXMtZ2NwLWZvcmQtY29tOjY0NDMvdGRlaWNoZWwKa2luZDogQ29uZmlnCnByZWZlcmVuY2VzOiB7fQp1c2VyczoKLSBuYW1lOiBkZWZhdWx0LWF1dGgKICB1c2VyOgogICAgdG9rZW46IDxSRURBQ1RFRD4KLSBuYW1lOiB0ZGVpY2hlbC9hcGktc2IxMDItY2Fhcy1nY3AtZm9yZC1jb206NjQ0MwogIHVzZXI6CiAgICB0b2tlbjogPFJFREFDVEVEPgo="
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: klusterlet
+rules:
+- apiGroups: [""]
+  resources: ["secrets", "configmaps", "serviceaccounts"]
+  verbs: ["create", "get", "list", "update", "watch", "patch", "delete"]
+- apiGroups: ["authorization.k8s.io"]
+  resources: ["subjectaccessreviews"]
+  verbs: ["create"]
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["create", "get", "list", "watch","delete"]
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["", "events.k8s.io"]
+  resources: ["events"]
+  verbs: ["create", "patch", "update"]
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["create", "get", "list", "update", "watch", "patch", "delete"]
+- apiGroups: ["rbac.authorization.k8s.io"]
+  resources: ["clusterrolebindings", "rolebindings"]
+  verbs: ["create", "get", "list", "update", "watch", "patch", "delete"]
+- apiGroups: ["rbac.authorization.k8s.io"]
+  resources: ["clusterroles", "roles"]
+  verbs: ["create", "get", "list", "update", "watch", "patch", "delete", "escalate", "bind"]
+- apiGroups: ["apiextensions.k8s.io"]
+  resources: ["customresourcedefinitions"]
+  verbs: ["create", "get", "list", "update", "watch", "patch", "delete"]
+- apiGroups: ["operator.open-cluster-management.io"]
+  resources: ["klusterlets"]
+  verbs: ["get", "list", "watch", "update", "patch", "delete"]
+- apiGroups: ["operator.open-cluster-management.io"]
+  resources: ["klusterlets/status"]
+  verbs: ["update", "patch"]
+- apiGroups: ["work.open-cluster-management.io"]
+  resources: ["appliedmanifestworks"]
+  verbs: ["list", "update", "patch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: open-cluster-management:klusterlet-admin-aggregate-clusterrole
+  labels:
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+rules:
+- apiGroups: ["operator.open-cluster-management.io"]
+  resources: ["klusterlets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: klusterlet
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: klusterlet
+subjects:
+- kind: ServiceAccount
+  name: klusterlet
+  namespace: "open-cluster-management-agent"
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: klusterlet
+  namespace: "open-cluster-management-agent"
+  labels:
+    app: klusterlet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: klusterlet
+  template:
+    metadata:
+      annotations:
+        target.workload.openshift.io/management: '{"effect": "PreferredDuringScheduling"}'
+      labels:
+        app: klusterlet
+    spec:
+      serviceAccountName: klusterlet
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/infra
+          operator: Exists
+      containers:
+      - name: klusterlet
+        image: registry.redhat.io/rhacm2/registration-rhel8-operator@sha256:e7e1b5545f4a4946f40cdd2101b5ccba9b947320debd1a244dd5244b3430a61b
+        imagePullPolicy: IfNotPresent
+        args:
+          - "/registration-operator"
+          - "klusterlet"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            scheme: HTTPS
+            port: 8443
+          initialDelaySeconds: 2
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            scheme: HTTPS
+            port: 8443
+          initialDelaySeconds: 2
+
+---
+apiVersion: operator.open-cluster-management.io/v1
+kind: Klusterlet
+metadata:
+  name: klusterlet
+spec:
+  registrationImagePullSpec: "registry.redhat.io/rhacm2/registration-rhel8@sha256:3321c3060bf6d75a2e0b184a0e7496fb799438faac3942370fe2d324c70af76e"
+  workImagePullSpec: "registry.redhat.io/rhacm2/work-rhel8@sha256:2dbcfa945a9d791988da52ef828dc9d674d4e33a372e21b719761e4d3b6a555a"
+  clusterName: "sb01"
+  namespace: "open-cluster-management-agent"
+  nodePlacement:
+    tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/infra
+      operator: Exists

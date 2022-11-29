@@ -1,0 +1,41 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: observability-metrics-custom-allowlist
+  namespace: open-cluster-management-observability
+data:
+  metrics_list.yaml: |
+    names:
+      - kube_pod_resource_request
+      - kube_pod_info
+      - node_disk_discards_completed_total
+      - node_disk_discards_merged_total
+      - node_disk_io_time_weighted_seconds_total
+      - node_disk_reads_completed_total
+      - node_disk_read_time_seconds_total
+      - node_disk_writes_completed_total
+      - node_disk_write_time_seconds_total
+      - node_load1
+      - node_load5
+      - node_load15
+      - node_procs_blocked
+      - node_procs_running
+      - node_uname_info
+      - node_vmstat_oom_kill
+      - px_alerts_meteringagentcritical
+      - px_cluster_cpu_percent
+      - px_node_status_license_expiry
+      - px_pool_stats_num_flushes
+      - px_pool_stats_flushed_bytes
+      - px_pool_stats_flushms
+      - px_pool_stats_provisioned_bytes
+      - px_pool_stats_total_bytes
+      - px_pool_stats_used_bytes
+      - px_volume_iops
+      - px_volume_replica_read_bytes_total
+      - px_volume_replica_read_ms_total
+      - px_volume_replica_written_bytes_total
+      - px_volume_replica_write_ms_total
+      - px_volume_writethroughput
+      - tekton_pipelines_controller_pipelinerun_count
+      - tekton_pipelines_controller_running_pipelineruns_count

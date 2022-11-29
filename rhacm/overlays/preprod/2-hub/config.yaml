@@ -1,0 +1,25 @@
+- op: replace
+  path: /spec/availabilityConfig
+  value: High
+  #value: Basic
+- op: add
+  path: /spec/enableClusterBackup
+  value: false
+#- op: add
+#  path: /spec/separateCertificateManagement # Deprecated
+#  value: false
+- op: add
+  path: /spec/enableClusterProxyAddon #Tech Preview
+  value: false
+#- op: add
+#  path: /spec/customCAConfigmap
+#  value:
+#- op: add
+#  path: /spec/disableUpdateClusterImageSets
+#  value:
+#- op: add
+#  path: /spec/disableHubSelfManagement
+#  value:
+#- op: add
+#  path: /spec/hive # Deprecated
+#  value:
