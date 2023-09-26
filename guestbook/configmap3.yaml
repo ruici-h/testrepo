@@ -1,0 +1,21 @@
+apiVersion: v1
+data:
+  database: mongodb
+kind: ConfigMap
+metadata:
+  annotations:
+    app.ibm.com/is-local-deployable: "false"
+    apps.open-cluster-management.io/channel: ch-obj/backend-test
+    apps.open-cluster-management.io/external-source: http://ec2-34-227-89-198.compute-1.amazonaws.com:9000/backend-test
+    apps.open-cluster-management.io/hosting-deployable: ch-object-minio/payload-cfg-obj-channel-7sklh
+    apps.open-cluster-management.io/is-generated: "true"
+    apps.open-cluster-management.io/is-local-deployable: "false"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps.open-cluster-management.io/v1","kind":"Deployable","metadata":{"annotations":{"app.ibm.com/is-local-deployable":"false"},"name":"payload-cfg-obj-channel","namespace":"default"},"spec":{"channels":["backend-test"],"template":{"apiVersion":"v1","data":{"database":"mongodb"},"kind":"ConfigMap","metadata":{"name":"cfg-from-ch-qa"}}}}
+    open-cluster-management.io/user-group: c3lzdGVtOnNlcnZpY2VhY2NvdW50cyxzeXN0ZW06c2VydmljZWFjY291bnRzOm9wZW4tY2x1c3Rlci1tYW5hZ2VtZW50LHN5c3RlbTphdXRoZW50aWNhdGVk
+    open-cluster-management.io/user-identity: c3lzdGVtOnNlcnZpY2VhY2NvdW50Om9wZW4tY2x1c3Rlci1tYW5hZ2VtZW50Om11bHRpY2x1c3Rlci1vcGVyYXRvcnM=
+  labels:
+    apps.open-cluster-management.io/channel: object-minio
+    apps.open-cluster-management.io/channel-type: ObjectBucket
+  name: cfg-from-ch-qa3
+
