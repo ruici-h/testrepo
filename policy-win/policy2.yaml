@@ -1,0 +1,67 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: config-ride-banners
+  namespace: rhacm-banner-policies
+  annotations:
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+spec:
+  disabled: false
+  remediationAction: inform
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: config-ride-banners
+        spec:
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: console.openshift.io/v1
+                kind: ConsoleNotification
+                metadata:
+                  name: ride-banner
+                spec:
+                  backgroundColor: '#c00e19'
+                  color: '#000000'
+                  link:
+                    href: 'https://confluence.zf-world.com/display/CAZAdmin/2023+September+-+planned+maintenance'
+                    text: Please visit the following link for details
+                  location: BannerTop
+                  text: Cluster maintenance
+          remediationAction: inform
+          severity: high
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-ride-banners
+  namespace: rhacm-banner-policies
+placementRef:
+  name: placement-policy-ride-banners
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+- name: config-ride-banners
+  kind: Policy
+  apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-ride-banners
+  namespace: rhacm-banner-policies
+spec:
+  clusterConditions:
+  - status: "True"
+    type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - key: name
+        operator: In
+        values:
+          - 'ride'
+
